@@ -1,5 +1,5 @@
 import pytest
-from conftest import OUTSIDER_TOKEN, fake_signer, fake_verifier, make_settings
+from conftest import OUTSIDER_TOKEN, Fakes, make_settings
 from fastapi.testclient import TestClient
 
 from eiken_api.main import create_app
@@ -11,14 +11,9 @@ def test_healthz(client: TestClient) -> None:
     assert res.json() == {"status": "ok"}
 
 
-def test_unknown_default_grade_fails_at_startup() -> None:
+def test_unknown_default_grade_fails_at_startup(fakes: Fakes) -> None:
     with pytest.raises(ValueError, match="DEFAULT_GRADE"):
-        create_app(
-            settings=make_settings(default_grade="pre9"),
-            token_verifier=fake_verifier,
-            set_repository=None,  # pyright: ignore[reportArgumentType]
-            url_signer=fake_signer,
-        )
+        create_app(settings=make_settings(default_grade="pre9"), deps=fakes.deps())
 
 
 @pytest.mark.parametrize(

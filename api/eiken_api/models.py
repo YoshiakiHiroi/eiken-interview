@@ -102,3 +102,70 @@ class ProblemSet(BaseModel):
     common_audio: dict[str, str] = {}
     usage_count: int = 0
     created_at: datetime | None = None
+
+
+Clarity = Literal["clear", "somewhat_unclear", "unclear"]
+YesNo = Literal["yes", "no"]
+
+
+# Gemini の response_schema にも使うため、値の範囲チェックは Field 制約ではなく scoring.validate_evaluation で行う
+class Evaluation(BaseModel):
+    transcript: str
+    score: int
+    feedback_ja: str
+    model_answer: str
+    issue_tags: list[str]
+    confidence: float
+    clarity: Clarity
+
+
+class AttitudeEvaluation(BaseModel):
+    score: int
+    feedback_ja: str
+
+
+class Answer(BaseModel):
+    part: str
+    audio_url: str
+    follow_up_audio_url: str | None = None
+    duration_sec: float
+    silence_before_sec: float
+    replay_count: int
+    yes_no: YesNo | None = None
+    transcript: str | None = None
+    score: int | None = None
+    feedback_ja: str | None = None
+    model_answer: str | None = None
+    issue_tags: list[str] = []
+    confidence: float | None = None
+    clarity: Clarity | None = None
+    evaluation_error: str | None = None
+
+
+class Attitude(BaseModel):
+    score: int | None
+    feedback_ja: str | None
+    evaluation_error: str | None = None
+
+
+class Session(BaseModel):
+    id: str
+    uid: str
+    grade: str
+    mode: SetMode
+    set_id: str
+    started_at: datetime
+    finished_at: datetime | None = None
+    answers: list[Answer] = []
+    attitude: Attitude | None = None
+    total: int | None = None
+    passed: bool | None = None
+
+
+class CreateSessionRequest(BaseModel):
+    mode: SetMode
+    set_id: str
+
+
+class CreateSessionResponse(BaseModel):
+    session_id: str

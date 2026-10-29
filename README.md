@@ -76,6 +76,31 @@ curl -H "Authorization: Bearer $ID_TOKEN" "http://localhost:8080/api/grades"
 curl -H "Authorization: Bearer $ID_TOKEN" "http://localhost:8080/api/sets/next?grade=pre2"
 ```
 
+### 回答の採点を確認する（Step 3）
+
+`api/tests/fixtures/` のサンプル回答音声は、GCP の準備ができたあとに Cloud Text-to-Speech で生成する（未作成）。
+
+```bash
+SESSION_ID=$(curl -s -X POST -H "Authorization: Bearer $ID_TOKEN" -H "Content-Type: application/json" \
+  -d '{"mode":"full","set_id":"pre2_dummy"}' http://localhost:8080/api/sessions | jq -r .session_id)
+
+# Q2（イラスト描写）
+curl -H "Authorization: Bearer $ID_TOKEN" \
+  -F audio=@api/tests/fixtures/q2.webm -F duration_sec=15 -F silence_before_sec=1.0 -F replay_count=0 \
+  http://localhost:8080/api/sessions/$SESSION_ID/answers/q2
+
+# Q4（Yes/No + 深掘り質問の2つの録音）
+curl -H "Authorization: Bearer $ID_TOKEN" \
+  -F audio=@api/tests/fixtures/q4_first.webm -F follow_up_audio=@api/tests/fixtures/q4_follow_up.webm \
+  -F yes_no=yes -F duration_sec=20 -F silence_before_sec=1.5 -F replay_count=0 \
+  http://localhost:8080/api/sessions/$SESSION_ID/answers/q4
+
+# 終了（アティチュード採点と合計）
+curl -X POST -H "Authorization: Bearer $ID_TOKEN" http://localhost:8080/api/sessions/$SESSION_ID/finish
+```
+
+採点に失敗した回答は `score: null` と `evaluation_error` 付きで保存される。同じパートに録音を送り直すと再採点される。
+
 ## GCP の準備とデプロイ
 
 Step 7 で記載する。

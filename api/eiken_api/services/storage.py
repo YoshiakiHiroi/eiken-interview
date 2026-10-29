@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from datetime import timedelta
-from typing import Any
+from typing import Any, Protocol
 
 UrlSigner = Callable[[str], str]
 
@@ -49,3 +49,19 @@ def gcs_signer(ttl_sec: int) -> UrlSigner:
         )
 
     return sign
+
+
+class AudioStore(Protocol):
+    def put(self, path: str, data: bytes, content_type: str) -> str: ...
+
+
+class GcsAudioStore:
+    def __init__(self, project: str, bucket: str) -> None:
+        from google.cloud import storage
+
+        self._bucket = storage.Client(project=project).bucket(bucket)
+
+    def put(self, path: str, data: bytes, content_type: str) -> str:
+        blob = self._bucket.blob(path)
+        blob.upload_from_string(data, content_type=content_type)
+        return f"{GS_PREFIX}{self._bucket.name}/{path}"
