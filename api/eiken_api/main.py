@@ -77,7 +77,7 @@ def build_app() -> FastAPI:
             audio_store=GcsAudioStore(settings.gcp_project, settings.assets_bucket),
             evaluator=GeminiEvaluator(
                 project=settings.gcp_project,
-                location=settings.gcp_location,
+                location=settings.gemini_location,
                 model=settings.gemini_model,
                 timeout_sec=settings.gemini_timeout_sec,
             ),

@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     gcp_location: str
     assets_bucket: str
     gemini_model: str
+    gemini_location: str
     gemini_timeout_sec: int = Field(default=60, gt=0)
     allowed_emails: Annotated[list[str], NoDecode]
     cors_origins: Annotated[list[str], NoDecode]

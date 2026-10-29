@@ -23,6 +23,12 @@ dev = [
     "ruff>=0.17.3",
     "types-pyyaml>=6.0.12.20260906",
 ]
+scripts = [
+    "google-cloud-texttospeech>=2.38.0",
+]
+
+[tool.uv]
+default-groups = ["dev", "scripts"]
 
 [build-system]
 requires = ["hatchling"]

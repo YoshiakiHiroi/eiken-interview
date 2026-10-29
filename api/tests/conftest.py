@@ -25,6 +25,7 @@ def make_settings(**overrides: Any) -> Settings:
         "gcp_location": "asia-northeast1",
         "assets_bucket": "test-bucket",
         "gemini_model": "test-model",
+        "gemini_location": "global",
         "allowed_emails": ALLOWED_EMAIL,
         "cors_origins": "http://localhost:5173",
         "signed_url_ttl_sec": 3600,

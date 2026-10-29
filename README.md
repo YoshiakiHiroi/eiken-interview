@@ -44,6 +44,7 @@ pre-commit install
 |---|---|
 | `DEFAULT_GRADE` | 既定の級（`api/eiken_api/grades/{grade}.yaml` が存在すること） |
 | `GCP_PROJECT` / `GCP_LOCATION` | GCP プロジェクト ID / リージョン |
+| `GEMINI_MODEL` / `GEMINI_LOCATION` | 採点に使う Gemini のモデル ID / エンドポイント（最新モデルは `global` のみで提供されることがある） |
 | `ASSETS_BUCKET` | 問題素材・録音を置く GCS バケット |
 | `ALLOWED_EMAILS` | ログインを許可するメール（カンマ区切り） |
 | `CORS_ORIGINS` | 許可するオリジン（カンマ区切り） |
