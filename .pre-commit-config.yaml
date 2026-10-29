@@ -15,21 +15,21 @@ repos:
     hooks:
       - id: ruff-check
         name: ruff check
-        entry: bash -c 'cd api && uv run ruff check --fix .'
+        entry: bash -c 'cd api && uv run ruff check --fix . ../scripts'
         language: system
-        files: ^api/
+        files: ^(api|scripts)/
         pass_filenames: false
       - id: ruff-format
         name: ruff format
-        entry: bash -c 'cd api && uv run ruff format .'
+        entry: bash -c 'cd api && uv run ruff format . ../scripts'
         language: system
-        files: ^api/
+        files: ^(api|scripts)/
         pass_filenames: false
       - id: pyright
         name: pyright
         entry: bash -c 'cd api && uv run pyright'
         language: system
-        files: ^api/.*\.py$
+        files: ^(api|scripts)/.*\.py$
         pass_filenames: false
       - id: web-lint
         name: eslint + prettier

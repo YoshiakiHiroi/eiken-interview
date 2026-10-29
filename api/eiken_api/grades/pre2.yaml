@@ -1,0 +1,72 @@
+grade: pre2
+label: 準2級
+test_name: Grade Pre-2
+pass_score: 19
+attitude_max_score: 3
+
+# 面接官の決まり文句。{candidate_name} は環境変数 CANDIDATE_NAME で置き換える
+phrases:
+  greeting:
+    - "Hello."
+    - "May I have your card, please?"
+    - "My name is Smith. May I have your name, please?"
+    - "This is the Grade Pre-2 test, OK?"
+  silent_reading: "First, please read the passage silently for twenty seconds."
+  read_aloud: "Now, please read it aloud."
+  five_questions: "Now, I'm going to ask you five questions."
+  turn_over: "Now, {candidate_name}, please turn over the card and put it down."
+  end:
+    - "This is the end of the test. May I have your card back, please?"
+    - "You may go now. Goodbye."
+
+opening_phrases: [greeting]
+closing_phrases: [end]
+
+# card: 回答中に画面へ出すもの（passage / picture_a / picture_b / none）
+# question_no: 問題セット（Firestore sets.questions[].no）との対応
+parts:
+  - id: silent_reading
+    type: silent_reading
+    card: passage
+    cue_phrases: [silent_reading]
+    seconds: 20
+
+  - id: read_aloud
+    type: read_aloud
+    card: passage
+    cue_phrases: [read_aloud]
+    max_score: 5
+
+  - id: q1
+    type: passage_question
+    card: passage
+    cue_phrases: [five_questions]
+    question_no: 1
+    max_score: 5
+
+  - id: q2
+    type: picture_actions
+    card: picture_a
+    question_no: 2
+    max_score: 5
+
+  - id: q3
+    type: picture_situation
+    card: picture_b
+    question_no: 3
+    max_score: 5
+
+  - id: q4
+    type: opinion
+    card: none
+    cue_phrases: [turn_over]
+    question_no: 4
+    follow_up: true
+    max_score: 5
+
+  - id: q5
+    type: personal
+    card: none
+    question_no: 5
+    follow_up: true
+    max_score: 5

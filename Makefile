@@ -5,11 +5,11 @@ install:
 	cd web && npm ci
 
 lint:
-	cd api && uv run ruff check . && uv run ruff format --check .
+	cd api && uv run ruff check . ../scripts && uv run ruff format --check . ../scripts
 	cd web && npm run lint
 
 format:
-	cd api && uv run ruff check --fix . && uv run ruff format .
+	cd api && uv run ruff check --fix . ../scripts && uv run ruff format . ../scripts
 	cd web && npm run format
 
 typecheck:
@@ -21,7 +21,7 @@ test:
 	cd web && npm run test
 
 api-dev:
-	cd api && uv run uvicorn eiken_api.main:app --reload --port 8080
+	cd api && uv run uvicorn --factory eiken_api.main:build_app --reload --port 8080
 
 web-dev:
 	cd web && npm run dev
