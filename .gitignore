@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+*.key.json
+
+# Firebase
+.firebase/
+
+# OS / editor
+.DS_Store
+.vscode/*
+!.vscode/settings.json

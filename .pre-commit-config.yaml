@@ -1,0 +1,39 @@
+exclude: ^docs/
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: check-yaml
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: bash -c 'cd api && uv run ruff check --fix .'
+        language: system
+        files: ^api/
+        pass_filenames: false
+      - id: ruff-format
+        name: ruff format
+        entry: bash -c 'cd api && uv run ruff format .'
+        language: system
+        files: ^api/
+        pass_filenames: false
+      - id: pyright
+        name: pyright
+        entry: bash -c 'cd api && uv run pyright'
+        language: system
+        files: ^api/.*\.py$
+        pass_filenames: false
+      - id: web-lint
+        name: eslint + prettier
+        entry: bash -c 'cd web && npm run -s lint'
+        language: system
+        files: ^web/
+        pass_filenames: false
