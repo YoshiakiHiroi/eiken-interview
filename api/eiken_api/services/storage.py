@@ -5,6 +5,7 @@ from typing import Any, Protocol
 UrlSigner = Callable[[str], str]
 
 GS_PREFIX = "gs://"
+CLOUD_PLATFORM_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
 
 
 def split_gs_url(url: str) -> tuple[str, str]:
@@ -31,7 +32,8 @@ def gcs_signer(ttl_sec: int) -> UrlSigner:
     from google.auth.transport.requests import Request
     from google.cloud import storage
 
-    credentials, project = google.auth.default()
+    # スコープを明示しないと、ローカルのなりすまし ADC でトークン取得が 400 になる
+    credentials, project = google.auth.default(scopes=[CLOUD_PLATFORM_SCOPE])
     client = storage.Client(project=project, credentials=credentials)
 
     def sign(url: str) -> str:
