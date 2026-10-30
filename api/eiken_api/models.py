@@ -21,6 +21,7 @@ class GradePart(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     id: str
+    label: str
     type: PartType
     card: CardKind
     cue_phrases: list[str] = []

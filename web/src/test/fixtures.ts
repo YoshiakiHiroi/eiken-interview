@@ -1,0 +1,125 @@
+import type { Grade, ProblemSet } from "../shared/types/api";
+
+const PART_DEFAULTS = {
+  cue_phrases: [],
+  seconds: null,
+  prep_seconds: null,
+  question_no: null,
+  follow_up: false,
+  max_score: 5,
+};
+
+export const PRE2_GRADE: Grade = {
+  grade: "pre2",
+  label: "準2級",
+  test_name: "Grade Pre-2",
+  pass_score: 19,
+  attitude_max_score: 3,
+  max_score_total: 33,
+  phrases: {
+    greeting: ["Hello.", "May I have your card, please?"],
+    silent_reading: "First, please read the passage silently for twenty seconds.",
+    read_aloud: "Now, please read it aloud.",
+    five_questions: "Now, I'm going to ask you five questions.",
+    turn_over: "Now, Mr. Test, please turn over the card and put it down.",
+    end: "This is the end of the test.",
+  },
+  opening_phrases: ["greeting"],
+  closing_phrases: ["end"],
+  parts: [
+    {
+      ...PART_DEFAULTS,
+      id: "silent_reading",
+      label: "黙読",
+      type: "silent_reading",
+      card: "passage",
+      cue_phrases: ["silent_reading"],
+      seconds: 20,
+      max_score: 0,
+    },
+    {
+      ...PART_DEFAULTS,
+      id: "read_aloud",
+      label: "音読",
+      type: "read_aloud",
+      card: "passage",
+      cue_phrases: ["read_aloud"],
+    },
+    {
+      ...PART_DEFAULTS,
+      id: "q1",
+      label: "No.1",
+      type: "passage_question",
+      card: "passage",
+      cue_phrases: ["five_questions"],
+      question_no: 1,
+    },
+    {
+      ...PART_DEFAULTS,
+      id: "q2",
+      label: "No.2",
+      type: "picture_actions",
+      card: "picture_a",
+      question_no: 2,
+    },
+    {
+      ...PART_DEFAULTS,
+      id: "q4",
+      label: "No.4",
+      type: "opinion",
+      card: "none",
+      cue_phrases: ["turn_over"],
+      question_no: 4,
+      follow_up: true,
+    },
+  ],
+};
+
+const QUESTION_DEFAULTS = {
+  audio_url: null,
+  model_answer: null,
+  picture_url: null,
+  actions: null,
+  follow_up_yes: null,
+  follow_up_no: null,
+  model_answer_yes: null,
+  model_answer_no: null,
+  follow_up_audio_yes_url: null,
+  follow_up_audio_no_url: null,
+};
+
+export const DUMMY_SET: ProblemSet = {
+  id: "pre2_dummy",
+  grade: "pre2",
+  enabled: true,
+  topic: "Recycling",
+  voice: "en-US-Chirp3-HD-Aoede",
+  passage: {
+    title: "Recycling at Home",
+    text: "Many people recycle. By doing so, they can reduce waste.",
+    key_sentence: "By doing so, they can reduce waste.",
+    audio_model_url: null,
+  },
+  questions: [
+    { ...QUESTION_DEFAULTS, no: 1, type: "passage", text: "How can people reduce waste?" },
+    {
+      ...QUESTION_DEFAULTS,
+      no: 2,
+      type: "picture_a",
+      text: "Please look at the picture.",
+      picture_url: "https://example.com/a.png",
+    },
+    {
+      ...QUESTION_DEFAULTS,
+      no: 4,
+      type: "opinion",
+      text: "Do you think more people will recycle?",
+      audio_url: "https://example.com/q4.mp3",
+      follow_up_yes: "Why?",
+      follow_up_no: "Why not?",
+      follow_up_audio_no_url: "https://example.com/q4_no.mp3",
+    },
+  ],
+  common_audio: { greeting: "https://example.com/greeting.mp3" },
+  usage_count: 0,
+};

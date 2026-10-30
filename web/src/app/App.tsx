@@ -1,5 +1,11 @@
-export const App = () => (
-  <main className="mx-auto max-w-md p-4">
-    <h1 className="text-xl font-bold">英検 面接練習</h1>
-  </main>
-);
+import { RouterProvider } from "react-router";
+
+import { router } from "./routes";
+
+export function App(): React.JSX.Element {
+  return (
+    <div className="mx-auto min-h-dvh max-w-md bg-gray-50 p-4 text-gray-900">
+      <RouterProvider router={router} />
+    </div>
+  );
+}
